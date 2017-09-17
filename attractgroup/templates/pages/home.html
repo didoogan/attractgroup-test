@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h3 align="center">{{ today }}</h3>
+    <table class="table">
+        <tr>
+            <td><b>User</b></td>
+            <td><b>Order</b></td>
+            <td><b>Actions</b></td>
+            <td><b>Order status</b></td>
+        </tr>
+        {% for invoice in invoices %}
+            <tr>
+                <td>{{ invoice.user }}</td>
+                <td>
+                    {% for product in invoice.products.all %}
+                        <div>{{ product.name }} ${{ product.price }}</div>
+                    {% endfor %}
+                    <span><i>Total: </i> <b>${{ invoice.total }}</b></span>
+                </td>
+                <td>
+                    {% if user == invoice.user and invoice.closed == False %}
+                        <button class="btn btn-success btn-sm show-select show-btn-{{invoice.user.id}}" type="button" data-id="{{ invoice.user.id }}">
+                            Add dish
+                        </button>
+                        <span>
+                            <select  class="dish dishes-slct-{{ invoice.user.id }}" data-id="{{ invoice.id }}">
+                                <option value="dich">-----</option>
+                                {% for product in products %}
+                                  <option value="{{ product.id }}">{{ product.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if invoice.closed %}
+                        <span>Closed</span>
+                        {% if request.user.is_superuser %}
+                            <input
+                                type="checkbox"
+                                name="invoice-status"
+                                class="invoice-chbx"
+                                {% if invoice.closed %}checked{% endif %}
+                                data-id="{{ invoice.id }}"
+                            >
+                        {% endif %}
+                    {% else %}
+                        <span>Opened</span>
+                        {% if request.user.is_superuser %}
+                            <input
+                                type="checkbox"
+                                name="invoice-status"
+                                class="invoice-chbx"
+                                {% if invoice.closed %}checked{% endif %}
+                                data-id="{{ invoice.id }}"
+                            >
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        {% for user in users %}
+            <tr>
+                <td>{{ user }}</td>
+                <td></td>
+                {% if user == request.user %}
+                <td>
+                    <button
+                        class="btn btn-success btn-sm show-select show-btn-{{user.id}}"
+                        type="button"
+                        data-id="{{ user.id }}"
+                    >
+                        Make an order
+                    </button>
+                    <select  class="dish dishes-slct-{{ user.id }} crt-invoice" data-id="{{ user.id }}">
+                        <option value="dich">-----</option>
+                        {% for product in products %}
+                          <option value="{{ product.id }}">{{ product.name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+    <h3 align="center">Totals:</h3>
+    <table class="table">
+        {% for k, v in count_products.items %}
+            <tr>
+                <td><i>{{ k }}</i></td>
+                <td>x {{ v.0 }}</td>
+                <td><b>${{ v.1 }}</b></td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td><span><b>Total: </b> ${{ total }}</span></td>
+        </tr>
+    </table>
+{% endblock content %}
+
+{% block customjavascript %}
+    <script>
+      $.ajaxSetup({beforeSend: function(xhr, settings){
+        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+      }});
+    </script>
+{% endblock customjavascript %}

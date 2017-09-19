@@ -1,77 +1,51 @@
-attractgroup
-============
+1. Клонируем проект
+git clone https://github.com/didoogan/attractgroup-test.git
 
-Test project
+2. Переходим внутрь
+cd attractgroup-test/
 
-.. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
-     :target: https://github.com/pydanny/cookiecutter-django/
-     :alt: Built with Cookiecutter Django
+3. Создаем базу
+sudo -u postgres psql
+CREATE DATABASE test_db;
+CREATE USER test WITH password 'test';
+GRANT ALL ON DATABASE test_db TO test;
 
+4. Создать виртуальное окружение
+pip install virtualenv
+virtualenv -p python3 .env
 
-:License: MIT
+5. Активируем его
+.env/bin/activate
 
+6. Устанавливаем зависимости
+pip3 install -r requirements/local.txt
 
-Settings
---------
+7. Создаем таблицы в базе
+./manage.py migrate
 
-Moved to settings_.
+8. Запускаем Celery
+celery -A config worker -l info
 
-.. _settings: http://cookiecutter-django.readthedocs.io/en/latest/settings.html
+9. Создаем супер юзера
+./manage.py createsuperuser
 
-Basic Commands
---------------
+10. Запускаем сервер
+./manage.py createsuperuser
 
-Setting Up Your Users
-^^^^^^^^^^^^^^^^^^^^^
+11. Заходим в админку (http://127.0.0.1:8000/admin/)
 
-* To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+12. Переходим в приложение Authenticator
 
-* To create an **superuser account**, use this command::
+13. Создаем новый объект Authenticator, выбираем csv файл с юзерами (в той же
+директории, что и manage.py
 
-    $ python manage.py createsuperuser
+14. Переходим в приложение Product, создаем несколько инстансов
 
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
+15. Переходим по http://127.0.0.1:8000/
 
-Test coverage
-^^^^^^^^^^^^^
+16. Играемя с заказами, тестируем админа и обычных юзеров (подсматриваем в
+консольку с celery, чтобы увидеть креденшилы созданных юзеров), в общем,
+убеждаемся, что все замечательно.
 
-To run the tests, check your test coverage, and generate an HTML coverage report::
-
-    $ coverage run manage.py test
-    $ coverage html
-    $ open htmlcov/index.html
-
-Running tests with py.test
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-::
-
-  $ py.test
-
-Live reloading and Sass CSS compilation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Moved to `Live reloading and SASS compilation`_.
-
-.. _`Live reloading and SASS compilation`: http://cookiecutter-django.readthedocs.io/en/latest/live-reloading-and-sass-compilation.html
-
-
-
-
-
-Deployment
-----------
-
-The following details how to deploy this application.
-
-
-Heroku
-^^^^^^
-
-See detailed `cookiecutter-django Heroku documentation`_.
-
-.. _`cookiecutter-django Heroku documentation`: http://cookiecutter-django.readthedocs.io/en/latest/deployment-on-heroku.html
-
-
-
-
+17. Перезваниваем мне, хвалим, предлагаем офер и ЗП в 3 раза больше, от
+запрашиваемой [шутка :)

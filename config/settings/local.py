@@ -68,9 +68,9 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'attractgroup_db',
-        'USER': 'doogan',
-        'PASSWORD': 'doogan',
+        'NAME': 'test_db',
+        'USER': 'test',
+        'PASSWORD': 'test',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

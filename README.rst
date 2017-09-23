@@ -30,7 +30,7 @@ celery -A config worker -l info
 ./manage.py createsuperuser
 
 10. Запускаем сервер
-./manage.py createsuperuser
+./manage.py runserver
 
 11. Заходим в админку (http://127.0.0.1:8000/admin/)
 
@@ -47,5 +47,3 @@ celery -A config worker -l info
 консольку с celery, чтобы увидеть креденшилы созданных юзеров), в общем,
 убеждаемся, что все замечательно.
 
-17. Перезваниваем мне, хвалим, предлагаем офер и ЗП в 3 раза больше, от
-запрашиваемой [шутка :)

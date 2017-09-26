@@ -47,3 +47,10 @@ celery -A config worker -l info
 консольку с celery, чтобы увидеть креденшилы созданных юзеров), в общем,
 убеждаемся, что все замечательно.
 
+DOCKER
+
+sudo docker-compose run web python manage.py makemigrations
+sudo docker-compose run web python manage.py migrate
+sudo docker-compose run web python manage.py createsuperuser
+sudo docker-compose up
+
